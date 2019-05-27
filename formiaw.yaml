@@ -1,0 +1,71 @@
+esphomeyaml:
+  name: formiaw
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret formiaw_wifi_ssid
+  password: !secret formiaw_wifi_psw
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+#api:
+#  password: !secret formiaw_ota_psw
+
+ota:
+  password: !secret formiaw_ota_psw
+
+switch:
+  - platform: gpio
+    pin: D2
+    id: porta
+    inverted: yes
+  - platform: template
+    name: "Porta Switch"
+    lambda: >-
+      if (id(porta).state) {
+        return true;
+      } else {
+        return false;
+      }
+    optimistic: yes
+    turn_on_action:
+    - switch.turn_on: porta
+    - delay: 200ms
+    - switch.turn_off: porta
+    turn_off_action:
+    - switch.turn_off: porta
+  - platform: gpio
+    pin: D1
+    id: portone
+    inverted: yes
+  - platform: template
+    name: "Portone Switch"
+    lambda: >-
+      if (id(portone).state) {
+        return true;
+      } else {
+        return false;
+      }
+    optimistic: yes
+    turn_on_action:
+    - switch.turn_on: portone
+    - delay: 200ms
+    - switch.turn_off: portone
+    turn_off_action:
+    - switch.turn_off: portone
+
+mqtt:
+  broker: !secret formia_mqtt_srv
+  username: !secret formia_mqtt_usr
+  password: !secret formia_mqtt_psw
+  birth_message:
+    topic: formiaw/status
+    payload: online
+  will_message:
+
+#deep_sleep:
+#  run_duration: 10s
+#  sleep_duration: 10min
