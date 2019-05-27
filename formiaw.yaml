@@ -1,4 +1,4 @@
-esphomeyaml:
+esphome:
   name: formiaw
   platform: ESP8266
   board: d1_mini
@@ -58,9 +58,9 @@ switch:
     - switch.turn_off: portone
 
 mqtt:
-  broker: !secret formia_mqtt_srv
-  username: !secret formia_mqtt_usr
-  password: !secret formia_mqtt_psw
+  broker: !secret formiaw_mqtt_srv
+  username: !secret formiaw_mqtt_usr
+  password: !secret formiaw_mqtt_psw
   birth_message:
     topic: formiaw/status
     payload: online
